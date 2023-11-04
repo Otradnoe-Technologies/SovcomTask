@@ -1,12 +1,4 @@
-## Модели
-
-### Концептульная модель:
-![](docs/conceptual_model.png)
-
-### Логическая модель:
-![](docs/logical_model.png)
-
-### Физическая модель:
+# Физическая модель
 
 ---
 
@@ -81,3 +73,7 @@
 | `grade_required` | Требуемый уровень сотрудника | `TEXT`     | `NOT NULL`     |
 | `condition_1 `   | Условие 1                    | `TEXT`     | `NOT NULL`     |
 | `condition_2 `   | Условие 2                    | `TEXT`     | `NOT NULL`     |
+
+
+
+
