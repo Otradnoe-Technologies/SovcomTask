@@ -4,23 +4,24 @@
 
 Таблица `manager`:
 
-| Название        | Описание      | Тип данных | Ограничение   |
-|-----------------|---------------|------------|---------------|
-| `manager_id`    | Идентификатор | `INTEGER`  | `PRIMARY KEY` |
-| `name`          | ФИО           | `TEXT`     | `NOT NULL`    |
-| `password_hash` | Хэш пароля    | `TEXT`     | `NOT NULL`    |
-| `email`         | Почта         | `TEXT`     | `NOT NULL`    |
+| Название          | Описание           | Тип данных | Ограничение   |
+|-------------------|--------------------|------------|---------------|
+| `manager_id`      | Идентификатор      | `INTEGER`  | `PRIMARY KEY` |
+| `name`            | ФИО                | `TEXT`     | `NOT NULL`    |
+| `password_hash`   | Хэш пароля         | `TEXT`     | `NOT NULL`    |
+| `email`           | Почта              | `TEXT`     | `NOT NULL`    |
 
 Таблица `employee`:
 
-| Название          | Описание      | Тип данных | Ограничение   |
-|-------------------|---------------|------------|---------------|
-| `employee_id`     | Идентификатор | `INTEGER`  | `PRIMARY KEY` |
-| `name`            | ФИО           | `TEXT`     | `NOT NULL`    |
-| `default_address` | Адрес локации | `TEXT`     | `NOT NULL`    |
-| `grade`           | Грейд         | `TEXT`     | `NOT NULL`    |
-| `password_hash`   | Хэш пароля    | `TEXT`     | `NOT NULL`    |
-| `email`           | Почта         | `TEXT`     | `NOT NULL`    |
+| Название           | Описание            | Тип данных | Ограничение   |
+|--------------------|---------------------|------------|---------------|
+| `employee_id`      | Идентификатор       | `INTEGER`  | `PRIMARY KEY` |
+| `name`             | ФИО                 | `TEXT`     | `NOT NULL`    |
+| `default_address`  | Адрес локации       | `TEXT`     | `-`           |
+| `grade`            | Грейд               | `TEXT`     | `-`           |
+| `password_hash`    | Хэш пароля          | `TEXT`     | `NOT NULL`    |
+| `email`            | Почта               | `TEXT`     | `UNIQUE`      |
+| `account_approved` | Аккаунт подтверждён | `INTEGER`  | `-`           |
 
 Таблица `route`:
 
@@ -65,16 +66,16 @@
 
 Таблица `task_info`:
 
-| Название         | Описание                     | Тип данных | Ограничение    |
-|------------------|------------------------------|------------|----------------|
-| `task_info_id`   | Идентификатор                | `INTEGER`  | `PRIMERY KEY`  |
-| `title`          | Название задачи              | `TEXT`     | `NOT NULL`     |
-| `priority`       | Приоритет                    | `TEXT`     | `NOT NULL`     |
-| `time_required`  | Время выполнения (в часах)   | `REAL`     | `NOT NULL`     |
-| `grade_required` | Требуемый уровень сотрудника | `TEXT`     | `NOT NULL`     |
-| `condition_1 `   | Условие 1                    | `TEXT`     | `NOT NULL`     |
-| `condition_2 `   | Условие 2                    | `TEXT`     | `NOT NULL`     |
-
+| Название         | Описание                     | Тип данных | Ограничение   |
+|------------------|------------------------------|------------|---------------|
+| `task_info_id`   | Идентификатор                | `INTEGER`  | `PRIMERY KEY` |
+| `type`           | Тип задачи                   | `INTEGER`  | `NOT NULL`    |
+| `title`          | Название задачи              | `TEXT`     | `NOT NULL`    |
+| `priority`       | Приоритет                    | `TEXT`     | `NOT NULL`    |
+| `time_required`  | Время выполнения (в часах)   | `REAL`     | `NOT NULL`    |
+| `grade_required` | Требуемый уровень сотрудника | `TEXT`     | `NOT NULL`    |
+| `condition_1 `   | Условие 1                    | `TEXT`     | `NOT NULL`    |
+| `condition_2 `   | Условие 2                    | `TEXT`     | `NOT NULL`    |
 
 
 

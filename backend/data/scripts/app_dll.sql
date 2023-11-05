@@ -2,16 +2,17 @@ CREATE TABLE IF NOT EXISTS manager (
   manager_id INTEGER PRIMARY KEY,
   name TEXT NOT NULL,
   password_hash TEXT NOT NULL,
-  email TEXT UNIQUE
+  email TEXT UNIQUE,
 );
 
 CREATE TABLE IF NOT EXISTS employee (
   employee_id INTEGER PRIMARY KEY,
   name TEXT NOT NULL,
-  default_address TEXT NOT NULL,
-  grade TEXT NOT NULL,
+  default_address TEXT,
+  grade TEXT,
   password_hash TEXT,
-  email TEXT UNIQUE
+  email TEXT UNIQUE,
+  account_approved INTEGER,
 );
 
 CREATE TABLE IF NOT EXISTS route (
@@ -34,7 +35,6 @@ CREATE TABLE IF NOT EXISTS route_X_task (
 CREATE TABLE IF NOT EXISTS task (
   task_id INTEGER PRIMARY KEY,
   task_info_id INTEGER,
-  office_id INTEGER,
   task_status TEXT NOT NULL,
   comment TEXT NOT NULL,
   FOREIGN KEY (task_info_id) REFERENCES task_info(task_info_id),
