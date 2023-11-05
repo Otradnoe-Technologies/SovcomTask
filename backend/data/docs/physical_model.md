@@ -1,34 +1,4 @@
-# Database
-
-## API
-
-**Initializing database:**
-```bash
-python3 -m db_utils.start_db
-```
-
-**Queries:**
-```python
-from db_utils.queries import *
-
-info = get_employee_info_by_id(1)
-print(info)
-# [(1, 'Дерягин Никита Владимирович', 'Краснодар, Красная, д. 139', 'Синьор', None, None)]
-```
-
-**Available Methods:**
-`get_employee_info_by_id(id)`
-`get_employee_info_by_email(email)`
-
-## Модели
-
-### Концептульная модель:
-![](docs/conceptual_model.png)
-
-### Логическая модель:
-![](docs/logical_model.png)
-
-### Физическая модель:
+# Физическая модель
 
 ---
 
@@ -95,13 +65,16 @@ print(info)
 
 Таблица `task_info`:
 
-| Название         | Описание                     | Тип данных | Ограничение   |
-|------------------|------------------------------|------------|---------------|
-| `task_info_id`   | Идентификатор                | `INTEGER`  | `PRIMERY KEY` |
-| `type`           | Тип задачи                   | `INTEGER`  | `NOT NULL`    |
-| `title`          | Название задачи              | `TEXT`     | `NOT NULL`    |
-| `priority`       | Приоритет                    | `TEXT`     | `NOT NULL`    |
-| `time_required`  | Время выполнения (в часах)   | `REAL`     | `NOT NULL`    |
-| `grade_required` | Требуемый уровень сотрудника | `TEXT`     | `NOT NULL`    |
-| `condition_1 `   | Условие 1                    | `TEXT`     | `NOT NULL`    |
-| `condition_2 `   | Условие 2                    | `TEXT`     | `NOT NULL`    |
+| Название         | Описание                     | Тип данных | Ограничение    |
+|------------------|------------------------------|------------|----------------|
+| `task_info_id`   | Идентификатор                | `INTEGER`  | `PRIMERY KEY`  |
+| `title`          | Название задачи              | `TEXT`     | `NOT NULL`     |
+| `priority`       | Приоритет                    | `TEXT`     | `NOT NULL`     |
+| `time_required`  | Время выполнения (в часах)   | `REAL`     | `NOT NULL`     |
+| `grade_required` | Требуемый уровень сотрудника | `TEXT`     | `NOT NULL`     |
+| `condition_1 `   | Условие 1                    | `TEXT`     | `NOT NULL`     |
+| `condition_2 `   | Условие 2                    | `TEXT`     | `NOT NULL`     |
+
+
+
+
