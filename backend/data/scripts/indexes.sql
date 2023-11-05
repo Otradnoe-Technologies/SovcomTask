@@ -1,2 +1,2 @@
-CREATE UNIQUE INDEX idx_employee_email 
+CREATE  UNIQUE INDEX IF NOT EXISTS idx_employee_email 
 ON employee (email);

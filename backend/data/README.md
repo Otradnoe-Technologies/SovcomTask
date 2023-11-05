@@ -1,6 +1,24 @@
 # Database
 
-import db_utils
+## API
+
+**Initializing database:**
+```bash
+python3 -m db_utils.start_db
+```
+
+**Queries:**
+```python
+from db_utils.queries import *
+
+info = get_employee_info_by_id(1)
+print(info)
+# [(1, 'Дерягин Никита Владимирович', 'Краснодар, Красная, д. 139', 'Синьор', None, None)]
+```
+
+**Available Methods:**
+`get_employee_info_by_id(id)`
+`get_employee_info_by_email(email)`
 
 ## Модели
 
