@@ -12,12 +12,14 @@ class office:
                materials_delivered = 'нет', days_since_last_card = 0,
                accepted_applications = 0, given_cards = 0):
         conn = db_engine.connect()
+        conn.execute("PRAGMA foreign_keys=ON;")
         query = db.insert(office_table).values(address=address,
                                                 when_opened=when_opened,
                                                 materials_delivered=materials_delivered,
                                                 days_since_last_card=days_since_last_card,
                                                 accepted_applications=accepted_applications,
-                                                given_cards=given_cards)
+                                                given_cards=given_cards
+                                               ).prefix_with('OR IGNORE')
         conn.execute(query)
         conn.close()
 
@@ -25,19 +27,21 @@ class office:
     def get_all():
         conn = db_engine.connect()
 
-        query = office_table.select("office_id")
+        query = db.select(office_table.c["office_id"])
         output = conn.execute(query).fetchall()
 
         offices = []
         for office_id in output:
-            offices.append(office(office_id))
+            offices.append(office(office_id[0]))
         conn.close()
+
+        return offices
 
     def __init__(self, office_id=None):
         conn = db_engine.connect()
 
         # collect info from office table
-        query = office_table.select().where(
+        query = db.select(office_table).where(
                 office_table.columns.office_id == office_id)
 
         output = conn.execute(query).fetchall()
@@ -56,7 +60,7 @@ class office:
             self.coordinates
         ) = output[0]
 
-        query = task_table.select("task_id").where(
+        query = db.select(task_table.c["task_id"]).where(
             task_table.c.office_id == self.id
         )
         output = conn.execute(query).fetchall()
@@ -70,9 +74,12 @@ class office:
         conn.close()
 
 
-    def __del__(self):
+    def safe(self):
+        if hasattr(self, 'id') is None:
+            return
         # safe to db before quiting
         conn = db_engine.connect()
+        conn.execute("PRAGMA foreign_keys=ON;")
 
         query = db.update(office_table).where(
             office_table.c.office_id == self.id
@@ -88,3 +95,9 @@ class office:
 
         conn.execute(query).fetchall()
         conn.close()
+
+    def __del__(self):
+        self.safe()
+
+    def __exit__(self):
+        self.safe()

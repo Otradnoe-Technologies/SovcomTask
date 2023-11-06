@@ -10,8 +10,10 @@ class Employee:
     @staticmethod
     def create(name, email, password_hash):
         conn = db_engine.connect()
+        conn.execute("PRAGMA foreign_keys=ON;")
         query = db.insert(employee_table).values(email=email, name=name,
-                                                     password_hash=password_hash)
+                                                     password_hash=password_hash
+                                                 ).prefix_with('OR IGNORE')
         conn.execute(query)
         conn.close()
 
@@ -61,9 +63,12 @@ class Employee:
         ) = output[0]
 
 
-    def __del__(self):
-        # safe to db before quiting
+    def safe(self):
+        if hasattr(self, 'id') is None:
+            return
+        # safe to db
         conn = db_engine.connect()
+        conn.execute("PRAGMA foreign_keys=ON;")
 
         query = db.update(employee_table).where(
             employee_table.c.employee_id == self.id
@@ -78,6 +83,13 @@ class Employee:
 
         conn.execute(query)
         conn.close()
+
+
+    def __del__(self):
+        self.safe()
+
+    def __exit__(self):
+        self.safe()
 
     def get_routes_history(self):
         conn = db_engine.connect()

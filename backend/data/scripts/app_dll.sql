@@ -19,31 +19,12 @@ CREATE TABLE IF NOT EXISTS employee (
 
 CREATE TABLE IF NOT EXISTS route (
   route_id INTEGER PRIMARY KEY,
-  employee_id INTEGER,
+  employee_id INTEGER NOT NULL,
   date TEXT NOT NULL,
   distance REAL NOT NULL,
   status TEXT NOT NULL,
   FOREIGN KEY (employee_id) REFERENCES employee(employee_id),
   CONSTRAINT unq UNIQUE (date, employee_id)
-);
-
-CREATE TABLE IF NOT EXISTS route_X_task (
-  task_id INTEGER PRIMARY KEY,
-  route_id INTEGER,
-  order_in_route INTEGER NOT NULL,
-  FOREIGN KEY (route_id) REFERENCES route(route_id),
-  FOREIGN KEY (task_id) REFERENCES task(task_id)
-);
-
-CREATE TABLE IF NOT EXISTS task (
-  task_id INTEGER PRIMARY KEY,
-  office_id INTEGER,
-  type INTEGER,
-  status TEXT NOT NULL,
-  comment TEXT NOT NULL,
-  date TEXT NOT NULL,
-  FOREIGN KEY (type) REFERENCES task_type(type),
-  FOREIGN KEY (office_id) REFERENCES office(office_id)
 );
 
 CREATE TABLE IF NOT EXISTS office (
@@ -65,4 +46,25 @@ CREATE TABLE IF NOT EXISTS task_type (
   grade_required TEXT NOT NULL,
   condition_1 TEXT NOT NULL,
   condition_2 TEXT NOT NULL
-); 
+);
+
+CREATE TABLE IF NOT EXISTS task (
+  task_id INTEGER PRIMARY KEY,
+  office_id INTEGER NOT NULL,
+  type INTEGER NOT NULL,
+  status TEXT NOT NULL,
+  comment TEXT,
+  date TEXT NOT NULL,
+  FOREIGN KEY (type) REFERENCES task_type(type),
+  FOREIGN KEY (office_id) REFERENCES office(office_id)
+);
+
+CREATE TABLE IF NOT EXISTS route_X_task (
+  task_id INTEGER PRIMARY KEY,
+  route_id INTEGER NOT NULL,
+  order_in_route INTEGER NOT NULL,
+  FOREIGN KEY (route_id) REFERENCES route(route_id),
+  FOREIGN KEY (task_id) REFERENCES task(task_id)
+);
+
+

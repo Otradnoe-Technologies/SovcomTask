@@ -8,8 +8,10 @@ class Manager:
     @staticmethod
     def create(name, email, password_hash):
         conn = db_engine.connect()
+        conn.execute("PRAGMA foreign_keys=ON;")
         query = db.insert(manager_table).values(email=email, name=name,
-                                                     password_hash=password_hash)
+                                                     password_hash=password_hash
+                                                ).prefix_with('OR IGNORE')
         conn.execute(query)
         conn.close()
 
@@ -33,12 +35,12 @@ class Manager:
         query = ''
         if manager_id:
             # find by id
-            query = manager_table.select().where(
+            query = db.select(manager_table).where(
                 manager_table.columns.manager_id == manager_id)
 
         elif email:
             # find by email
-            query = manager_table.select().where(
+            query = db.select(manager_table).where(
                 manager_table.columns.email == email)
 
         output = conn.execute(query).fetchall()
@@ -55,9 +57,12 @@ class Manager:
         ) = output[0]
 
 
-    def __del__(self):
+    def safe(self):
+        if hasattr(self, 'id') is None:
+            return
         # safe to db before quiting
         conn = db_engine.connect()
+        conn.execute("PRAGMA foreign_keys=ON;")
 
         query = db.update(manager_table).where(
             manager_table.c.manager_id == self.id
@@ -69,3 +74,9 @@ class Manager:
 
         conn.execute(query)
         conn.close()
+
+    def __del__(self):
+        self.safe()
+
+    def __exit__(self):
+        self.safe()

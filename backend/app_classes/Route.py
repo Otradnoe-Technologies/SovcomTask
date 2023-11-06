@@ -10,9 +10,9 @@ class Route:
         conn = db_engine.connect()
 
         # first insert route to route table
-        route_table = db_meta.tables.route
         query = db.insert(route_table).values(employee_id=employee_id, status=status,
-                                             date=date, distance=distance)
+                                             date=date, distance=distance
+                                              ).prefix_with('OR IGNORE')
         conn.execute(query)
 
         route = Route(employee_id, date)
@@ -32,20 +32,21 @@ class Route:
     def get_all():
         conn = db_engine.connect()
 
-        query = route_table.select("route_id")
+        query = db.select(route_table.c["route_id"])
         output = conn.execute(query).fetchall()
 
         routes = []
         for route_id in output:
-            routes.append(Task(route_id))
+            routes.append(Task(route_id[0]))
         conn.close()
+        return routes
 
 
     @staticmethod
     def get_active():
         conn = db_engine.connect()
 
-        query = route_table.select("route_id").where(
+        query = db.select(route_table.c["route_id"]).where(
             route_table.columns.status != "Не закончен"
             and route_table.columns.status != "Закончен"
         )
@@ -55,6 +56,7 @@ class Route:
         for route_id in output:
             routes.append(Task(route_id))
         conn.close()
+        return routes
 
 
     def __init__(self, route_id=None, employee_id=None, date=None):
@@ -62,11 +64,11 @@ class Route:
         route_table = db_meta.tables.task
         query = ""
         if route_id:
-            query = route_table.select().where(
+            query = db.select(route_table).where(
                 route_table.c.route_id == route_id)
 
         elif employee_id and date:
-            query = route_table.select().where(
+            query = db.select(route_table).where(
                 route_table.c.employee_id == employee_id
                 and route_table.c.date == date
             )
@@ -88,7 +90,7 @@ class Route:
 
         # collect tasks from route_X_task table
         route_x_task = db_meta.tables.route_X_task
-        query = route_x_task.select("task_id").where(
+        query = db.select(route_x_task.c["task_id"]).where(
             route_table.c.route_id == self.id)
         output = conn.execute(query).fetchall()
 
@@ -99,9 +101,12 @@ class Route:
         conn.close()
 
 
-    def __del__(self):
-        # safe to db before quiting
+    def safe(self):
+        if hasattr(self, 'id') is None:
+            return
+        # safe to db
         conn = db_engine.connect()
+        conn.execute("PRAGMA foreign_keys=ON;")
 
         # safe route into route table
         route_table = db_meta.tables.route
@@ -128,4 +133,8 @@ class Route:
 
         conn.close()
 
+    def __del__(self):
+        self.safe()
 
+    def __exit__(self):
+        self.safe()
