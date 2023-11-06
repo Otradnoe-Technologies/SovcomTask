@@ -1,8 +1,8 @@
 from backend.config import db_engine, db_meta
 import sqlalchemy as db
-from Task import Task
+from .Task import Task
 
-route_table = db_meta.tables.routes
+route_table = db_meta.tables['route']
 
 class Route:
     @staticmethod

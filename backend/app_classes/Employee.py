@@ -1,9 +1,9 @@
 from backend.config import db_engine, db_meta
 import sqlalchemy as db
-from Route import Route
+from .Route import Route
 
-employee_table = db_meta.tables.employee
-route_table = db_meta.tables.routes
+employee_table = db_meta.tables['employee']
+route_table = db_meta.tables['route']
 
 class Employee:
 
@@ -19,23 +19,25 @@ class Employee:
     def get_all():
         conn = db_engine.connect()
 
-        query = employee_table.select("employee_id")
+        query = db.select(employee_table.c["employee_id"])
         output = conn.execute(query).fetchall()
 
         employees = []
         for employee_id in output:
-            employees.append(Employee(employee_id))
-        conn.close()
+            employees.append(Employee(employee_id=employee_id[0]))
 
-    def __init__(self, email=None, id=None):
+        conn.close()
+        return employees
+
+    def __init__(self, email=None, employee_id=None):
         conn = db_engine.connect()
 
         # collect info from employee table
         query = ''
-        if id:
+        if employee_id:
             # find by id
             query = employee_table.select().where(
-                employee_table.columns.employee_id == id)
+                employee_table.columns.employee_id == employee_id)
 
         elif email:
             # find by email
@@ -67,19 +69,19 @@ class Employee:
             employee_table.c.employee_id == self.id
         ).values(
             name=self.name,
-            default_addres=self.default_address,
+            default_address=self.default_address,
             grade=self.grade,
             password_hash=self.password_hash,
             email=self.email,
             account_approved=self.account_approved
         )
 
-        conn.execute(query).fetchall()
+        conn.execute(query)
         conn.close()
 
     def get_routes_history(self):
         conn = db_engine.connect()
-        query = route_table.select("route_id").where(
+        query = db.select(route_table.c["route_id"]).where(
             route_table.columns.employee_id == self.id
         ).order_by(
             route_table.columns.date
@@ -109,11 +111,11 @@ class Employee:
 
     def get_current_routes(self):
         conn = db_engine.connect()
-        query = route_table.select("route_id").where(
+        query = db.select(route_table.c["route_id"]).where(
             route_table.columns.employee_id == self.id
             and route_table.columns.status != "Не закончен"
             and route_table.columns.status != "Закончен"
-        ).sort_by(
+        ).order_by(
             route_table.columns.date
         )
         output = conn.execute(query).fetchall()
@@ -130,7 +132,8 @@ class Employee:
 
         for route in current_routes:
             for task in route.tasks:
-                if task.status == "В процессе" or task.status == "Приостановлен":
+                if (task.status == "В процессе"
+                        or task.status == "Приостановлен"):
                     return task
 
         return None

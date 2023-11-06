@@ -1,10 +1,10 @@
 from backend.config import db_engine, db_meta
 import sqlalchemy as db
 
-task_table = db_meta.tables.task
-task_type_table = db_meta.tables.task_type_table
-task_x_route = db_meta.tables.task_x_route
-route_table = db_meta.tables.routes
+task_table = db_meta.tables['task']
+task_type_table = db_meta.tables['task_type']
+task_x_route = db_meta.tables['route_X_task']
+route_table = db_meta.tables['route']
 
 class Task:
 

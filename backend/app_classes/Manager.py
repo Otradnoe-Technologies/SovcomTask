@@ -1,7 +1,7 @@
 from backend.config import db_engine, db_meta
 import sqlalchemy as db
 
-manager_table = db_meta.tables.manager
+manager_table = db_meta.tables['manager']
 
 class Manager:
 
@@ -17,23 +17,24 @@ class Manager:
     def get_all():
         conn = db_engine.connect()
 
-        query = manager_table.select("manager_id")
+        query = db.select(manager_table.c["manager_id"])
         output = conn.execute(query).fetchall()
 
         managers = []
         for manager_id in output:
-            managers.append(Manager(manager_id))
+            managers.append(Manager(manager_id[0]))
         conn.close()
+        return managers
 
-    def __init__(self, email=None, id=None):
+    def __init__(self, email=None, manager_id=None):
         conn = db_engine.connect()
 
         # collect info from manager table
         query = ''
-        if id:
+        if manager_id:
             # find by id
             query = manager_table.select().where(
-                manager_table.columns.manager_id == id)
+                manager_table.columns.manager_id == manager_id)
 
         elif email:
             # find by email
@@ -66,5 +67,5 @@ class Manager:
             email=self.email,
         )
 
-        conn.execute(query).fetchall()
+        conn.execute(query)
         conn.close()

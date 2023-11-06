@@ -2,8 +2,8 @@ from backend.config import db_engine, db_meta
 import sqlalchemy as db
 from Task import Task
 
-office_table = db_meta.tables.office
-task_table = db_meta.tables.task
+office_table = db_meta.tables['office']
+task_table = db_meta.tables['task']
 
 class office:
 

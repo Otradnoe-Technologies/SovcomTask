@@ -14,7 +14,7 @@
 
 ### Constructors:
 - `Employee(email)` - gets Employee object from db
-- `Employee(id)` - gets Employee object from db
+- `Employee(employee_id)` - gets Employee object from db
 
 ### Methods:
 - @static `get_all()`- returns list of Employee objects
