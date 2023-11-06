@@ -28,9 +28,9 @@ CREATE TABLE IF NOT EXISTS route (
 );
 
 CREATE TABLE IF NOT EXISTS route_X_task (
+  task_id INTEGER PRIMARY KEY,
   route_id INTEGER,
-  task_id INTEGER,
-  order_in_route TEXT NOT NULL,
+  order_in_route INTEGER NOT NULL,
   FOREIGN KEY (route_id) REFERENCES route(route_id),
   FOREIGN KEY (task_id) REFERENCES task(task_id)
 );
