@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS manager (
   name TEXT NOT NULL,
   password_hash TEXT NOT NULL,
   email TEXT UNIQUE,
+  UNIQUE (email COLLATE NOCASE)
 );
 
 CREATE TABLE IF NOT EXISTS employee (
@@ -13,6 +14,7 @@ CREATE TABLE IF NOT EXISTS employee (
   password_hash TEXT,
   email TEXT UNIQUE,
   account_approved INTEGER,
+  UNIQUE (email COLLATE NOCASE)
 );
 
 CREATE TABLE IF NOT EXISTS route (
@@ -21,7 +23,8 @@ CREATE TABLE IF NOT EXISTS route (
   date TEXT NOT NULL,
   distance REAL NOT NULL,
   status TEXT NOT NULL,
-  FOREIGN KEY (employee_id) REFERENCES employee(employee_id)
+  FOREIGN KEY (employee_id) REFERENCES employee(employee_id),
+  CONSTRAINT unq UNIQUE (date, employee_id)
 );
 
 CREATE TABLE IF NOT EXISTS route_X_task (
@@ -34,10 +37,12 @@ CREATE TABLE IF NOT EXISTS route_X_task (
 
 CREATE TABLE IF NOT EXISTS task (
   task_id INTEGER PRIMARY KEY,
-  task_info_id INTEGER,
-  task_status TEXT NOT NULL,
+  office_id INTEGER,
+  type INTEGER,
+  status TEXT NOT NULL,
   comment TEXT NOT NULL,
-  FOREIGN KEY (task_info_id) REFERENCES task_info(task_info_id),
+  date TEXT NOT NULL,
+  FOREIGN KEY (type) REFERENCES task_type(type),
   FOREIGN KEY (office_id) REFERENCES office(office_id)
 );
 
@@ -52,9 +57,8 @@ CREATE TABLE IF NOT EXISTS office (
   coordinates TEXT
 );
 
-CREATE TABLE IF NOT EXISTS task_info (
-  task_info_id INTEGER PRIMARY KEY,
-  type INTEGER NOT NULL,
+CREATE TABLE IF NOT EXISTS task_type (
+  type INTEGER PRIMARY KEY,
   title TEXT NOT NULL,
   priority TEXT NOT NULL,
   time_required REAL NOT NULL,
