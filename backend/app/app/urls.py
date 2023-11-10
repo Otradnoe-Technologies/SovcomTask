@@ -17,8 +17,21 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import include, path
+from rest_framework import routers
+
+from tasks import views
+
+router = routers.DefaultRouter()
+router.register(r'employee', views.EmployeeViewSet)
+router.register(r'task', views.TaskViewSet)
+router.register(r'route', views.RouteViewSet)
+router.register(r'office', views.OfficeViewSet)
+router.register(r'manager', views.ManagerViewSet)
+router.register(r'taskType', views.TaskTypeViewSet)
 
 urlpatterns = [
     path("", include("tasks.urls")),
+    path('api', include(router.urls)),
     path("admin/", admin.site.urls),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

@@ -11,8 +11,8 @@ class Manager(models.Model):
 
 class Employee(models.Model):
     full_name = models.CharField(max_length=200)
-    default_address = models.CharField(max_length=200)
-    grade = models.CharField(max_length=200)
+    default_address = models.CharField(max_length=200, blank=True)
+    grade = models.CharField(max_length=200, blank=True)
     email = models.CharField(max_length=200, blank=False)
     account_approved = models.BooleanField(default=False)
 
@@ -34,8 +34,8 @@ class Office(models.Model):
     last_card_date = models.DateTimeField()
     accepted_applications = models.IntegerField()
     given_cards = models.IntegerField()
-    coordinate_x = models.FloatField()
-    coordinate_y = models.FloatField()
+    latitude = models.FloatField()
+    longitude = models.FloatField()
 
 
 class TaskType(models.Model):
@@ -52,6 +52,7 @@ class Task(models.Model):
     route = models.ForeignKey(Route, null=True, on_delete=models.CASCADE)
     type = models.ForeignKey(TaskType, on_delete=models.CASCADE)
     office = models.ForeignKey(Office, on_delete=models.CASCADE)
+    created = models.DateTimeField()
     status = models.CharField(max_length=200, default="Не назначена")
     comment = models.CharField(max_length=200, default="")
 
