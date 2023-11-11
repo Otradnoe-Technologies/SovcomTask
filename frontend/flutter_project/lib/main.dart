@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(CurrentTask());
 }
 
 class MyApp extends StatelessWidget {
@@ -120,6 +120,209 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+
+}
+
+
+class CurrentTask extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          width: 360,
+          height: 800,
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(color: Colors.white),
+          child: Stack(
+            children: [
+              Positioned(
+                left: 37,
+                top: 20,
+                child: Container(
+                  width: 72,
+                  height: 72,
+                  decoration: ShapeDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage("https://via.placeholder.com/72x72"),
+                      fit: BoxFit.fill,
+                    ),
+                    shape: OvalBorder(),
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 128,
+                top: 20,
+                child: SizedBox(
+                  width: 201,
+                  height: 69,
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Full Name\n\n',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w400,
+                            height: 0,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'email@example.com',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w400,
+                            height: 0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 40,
+                top: 220,
+                child: Container(
+                  width: 292,
+                  height: 248,
+                  decoration: BoxDecoration(color: Color(0xFFD9D9D9)),
+                ),
+              ),
+              Positioned(
+                left: 42,
+                top: 129,
+                child: SizedBox(
+                  width: 287,
+                  height: 44,
+                  child: Text(
+                    'Текущая задача:',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w700,
+                      height: 0,
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 121,
+                top: 487,
+                child: Container(
+                  width: 119,
+                  height: 119,
+                  decoration: ShapeDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage("https://via.placeholder.com/119x119"),
+                      fit: BoxFit.fill,
+                    ),
+                    shape: OvalBorder(),
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 121,
+                top: 487,
+                child: Container(
+                  width: 119,
+                  height: 119,
+                  decoration: ShapeDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage("https://via.placeholder.com/119x119"),
+                      fit: BoxFit.fill,
+                    ),
+                    shape: OvalBorder(),
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 121,
+                top: 484,
+                child: Container(
+                  width: 119,
+                  height: 125,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 119,
+                        height: 125,
+                        decoration: ShapeDecoration(
+                          image: DecorationImage(
+                            image: NetworkImage("https://via.placeholder.com/119x125"),
+                            fit: BoxFit.fill,
+                          ),
+                          shape: OvalBorder(),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 47,
+                top: 516,
+                child: Container(
+                  width: 62,
+                  height: 62,
+                  decoration: ShapeDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage("https://via.placeholder.com/62x62"),
+                      fit: BoxFit.fill,
+                    ),
+                    shape: OvalBorder(),
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 259,
+                top: 516,
+                child: Container(
+                  width: 62,
+                  height: 62,
+                  decoration: ShapeDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage("https://via.placeholder.com/62x62"),
+                      fit: BoxFit.fill,
+                    ),
+                    shape: OvalBorder(),
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 41,
+                top: 173,
+                child: SizedBox(
+                  width: 286,
+                  height: 37,
+                  child: Text(
+                    'Описание:\nАдрес:',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w400,
+                      height: 0,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
