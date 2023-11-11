@@ -18,6 +18,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
+from rest_framework.authtoken import views as authviews
 
 from tasks import views
 
@@ -33,5 +34,6 @@ urlpatterns = [
     path("", include("tasks.urls")),
     path('api/', include(router.urls)),
     path("admin/", admin.site.urls),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api-token-auth/', authviews.obtain_auth_token, name='api_token_auth')
 ]
