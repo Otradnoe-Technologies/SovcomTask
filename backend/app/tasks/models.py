@@ -1,4 +1,5 @@
 from django.db import models
+from utils.get_coordinates import get_coordinates_by_address
 
 class Manager(models.Model):
     full_name = models.CharField(max_length=200)
@@ -29,13 +30,21 @@ class Route(models.Model):
 
 class Office(models.Model):
     address = models.CharField(max_length=200)
-    when_opened = models.DateTimeField()
-    materials_delivered = models.BooleanField()
-    last_card_date = models.DateTimeField()
+    when_opened = models.DateTimeField(auto_now_add=True)
+    materials_delivered = models.BooleanField(default=False)
+    last_card_date = models.DateTimeField(auto_now_add=True)
     accepted_applications = models.IntegerField()
     given_cards = models.IntegerField()
     latitude = models.FloatField()
     longitude = models.FloatField()
+
+    @classmethod
+    def create(cls, **kwargs):
+        office = cls(**kwargs)
+        office.latitude, office.longitude \
+            = get_coordinates_by_address(office.address)
+
+        return office
 
 
 class TaskType(models.Model):

@@ -18,6 +18,3 @@ def get_coordinates_by_address(address):
         coordinates[1] = float(coordinates[1])
 
     return coordinates
-
-coordinates = get_coordinates_by_address("Тверская+6")
-print(coordinates)
